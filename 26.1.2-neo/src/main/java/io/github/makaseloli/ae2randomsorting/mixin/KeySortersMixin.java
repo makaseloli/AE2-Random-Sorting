@@ -1,10 +1,10 @@
 package io.github.makaseloli.ae2randomsorting.mixin;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Comparator;
 
 import appeng.api.config.SortDir;
@@ -34,7 +34,7 @@ public abstract class KeySortersMixin {
         AE2RANDOMSORTING_RANDOM.nextBytes(seed);
 
         Comparator<AEKey> comparator = Comparator
-                .comparingLong((AEKey key) -> ae2randomsorting$rank(seed, key))
+                .comparing((AEKey key) -> ae2randomsorting$rank(seed, key), KeySortersMixin::ae2randomsorting$compareUnsigned)
                 .thenComparing(key -> key.getId().toString())
                 .thenComparingInt(Object::hashCode);
         if (sortDir == SortDir.DESCENDING) {
@@ -44,17 +44,22 @@ public abstract class KeySortersMixin {
     }
 
     @Unique
-    private static long ae2randomsorting$rank(byte[] seed, AEKey key) {
+    private static byte[] ae2randomsorting$rank(byte[] seed, AEKey key) {
         try {
             var digest = MessageDigest.getInstance("SHA-256");
             digest.update(seed);
             ae2randomsorting$update(digest, key.getType().toString());
             ae2randomsorting$update(digest, key.getId().toString());
             ae2randomsorting$update(digest, String.valueOf(key.getPrimaryKey()));
-            return ByteBuffer.wrap(digest.digest()).getLong();
+            return digest.digest();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("SHA-256 is required by the Java runtime", e);
         }
+    }
+
+    @Unique
+    private static int ae2randomsorting$compareUnsigned(byte[] left, byte[] right) {
+        return Arrays.compareUnsigned(left, right);
     }
 
     @Unique
