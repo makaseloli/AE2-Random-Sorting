@@ -12,6 +12,7 @@ displayURL="${mod_display_url}"
 credits="${mod_credits}"
 authors="${mod_authors}"
 description='''${mod_description}'''
+displayTest="IGNORE_ALL_VERSION"
 
 [[mixins]]
 config="${mod_id}.mixins.json"

@@ -14,15 +14,7 @@
   "custom": {
     "credits": ${mod_credits}
   },
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      ${mod_entrypoint}
-    ],
-    "client": [
-      ${mod_client_entrypoint}
-    ]
-  },
+  "environment": "client",
   "mixins": [
     "ae2randomsorting.mixins.json"
   ],

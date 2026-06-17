@@ -3,11 +3,11 @@
   "minVersion": "0.8",
   "package": "io.github.makaseloli.ae2randomsorting.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "SortOrderMixin"
-  ],
+  "mixins": [],
   "client": [
     "KeySortersMixin",
+    "MEStorageScreenMixin",
+    "SortOrderMixin",
     "SettingToggleButtonMixin"
   ],
   "injectors": {
